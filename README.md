@@ -7,7 +7,7 @@ Crée une machine virtuelle dans le sgoinfre, tu peut mettre 1GB de RAM et 10 GB
 Il faut bien l'installer, la premiere fois que tu ouvre la VM tu dois continuer l'installation.
 
 Pour ce connecter au shh et utulise ton vscode:
-1 - allez au settings de l'application virtualBox -> Network -> portForwarding -> ouvre le port 4242
+1 - allez au settings de l'application virtualBox -> Network -> portForwarding -> ouvre le port 4242.
 2 - a la VM, sudo apt-get install openssh-server, va sur le fichier sshd_config sudo vim /etc/ssh/sshd_config
 Active le port 22 et met le port 4242.
 tu peux faire maintennant sudo service ssh restart.
