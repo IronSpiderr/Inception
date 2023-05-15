@@ -19,3 +19,14 @@ la ton vscode est connecté avec la VM via ssh, tu peux utiliser la commande "co
 
 -------------------------------------
 Maintennant tu peux commencer le projet
+
+Le docker c'est comme un VM qui prend peu de ressources
+
+NGINX-
+
+C'est un serveur web que tu va mettre ton site web.
+tu va cree un certificat pour acceder a ton site.
+
+
+J'utilise l'image debian:buster
+
