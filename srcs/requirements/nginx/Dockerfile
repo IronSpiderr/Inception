@@ -15,7 +15,7 @@ RUN openssl req -new -x509 -sha256 -config /etc/ssl/openssl.conf \
     -key /etc/ssl/private/nginx-selfsigned.key \
     -out /etc/ssl/certs/nginx-selfsigned.crt
 
-COPY ./config/nginx.conf /etc/nginx/nginx.conf
+COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 
 # Exposer le port 443 pour le trafic HTTPS
 EXPOSE 443
