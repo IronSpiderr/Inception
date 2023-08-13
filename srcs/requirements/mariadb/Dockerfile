@@ -1,14 +1,15 @@
-FROM debian:buster
+FROM alpine:3.17
+RUN apk update && \
+    apk upgrade && \
+	apk add mariadb
 
-RUN apt-get update -y && \
-    apt-get upgrade -y && \
-	apt-get install -y mariadb-server moreutils gettext
+# RUN mkdir -p /run/mysqld
+# RUN chown -R mysql:mysql /run/mysqld
 
-RUN mkdir -p /run/mysqld
-RUN chown -R mysql:mysql /run/mysqld
+# ENV TERM xterm
 
-COPY ./conf/mariadb.conf /etc/mysql/mariadb.d/
-COPY ./tools/init.sql /
+# COPY ./conf/mariadb.conf /etc/mysql/mariadb.d/
+# COPY ./tools/init.sql /
 
 EXPOSE 3306
 

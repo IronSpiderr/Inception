@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM alpine:3.17
 
 RUN apt-get update -y && \
     apt-get upgrade -y && \
