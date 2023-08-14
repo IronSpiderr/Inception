@@ -1,16 +1,15 @@
 version: '3'
 services:
   mariadb:
-    image: mariadb
     container_name: mariadb
     build:
       context: ./requirements/mariadb/
       dockerfile: Dockerfile
-    restart: always    
     env_file:
       - .env
-    # volumes:
-    #   - db_data:/var/lib/mysql
+    # restart : always   
+    volumes:
+      - db_data:/var/lib/mysql
 
   # wordpress:
   #   container_name: wordpress
@@ -40,13 +39,13 @@ services:
   #   volumes:
   #     - wp_data:/var/www/html
 
-# volumes:
-#   db_data:
-#     driver: local
-#     driver_opts:
-#       type: none
-#       o: bind
-#       device: /home/mgomesd/data/mariadb
+volumes:
+  db_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/mgomes-d/data/mariadb
   # wp_data:
   #   driver: local
   #   name: wp
