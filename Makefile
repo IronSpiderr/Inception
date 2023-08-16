@@ -22,7 +22,7 @@ down:
 	@echo "$(CLR_YELLOW)Shutting down the ${NAME} configuration ...\n$(CLR_RESET)"
 	@docker-compose -f ./srcs/docker-compose.yml down
 
-re:
+re: down
 	@echo "$(CLR_BLACK)Remaking the ${NAME} configuration ...\n$(CLR_RESET)"
 	@docker-compose -f ./srcs/docker-compose.yml up -d --build
 
@@ -32,10 +32,4 @@ clean: down
 
 fclean:
 	@echo "$(CLR_MAGENTA)Cleaning all the docker configuration ...\n$(CLR_RESET)"
-	@docker stop $$(docker ps -qa) 2>/dev/null
-	@docker rm $$(docker ps -qa) 2>/dev/null
-	@docker rmi -f $$(docker images -qa) 2>/dev/null
-	@docker volume rm $$(docker volume ls -q) 2>/dev/null
-	@docker network rm $$(docker network ls -q) 2>/dev/null
-	@docker system prune -a --volume 2>/dev/null
-	@docker system prune -a --force 2>/dev/null
+	@sh srcs/requirements/tools/destroy.sh
