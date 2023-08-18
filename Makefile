@@ -12,24 +12,30 @@ CLR_RESET	= \033[0m
 
 all:
 	@echo "$(CLR_GREEN)Lauch of ${NAME} configuration ...\n$(CLR_RESET)"
-	@docker-compose -f ./srcs/docker-compose.yml up -d
+	@sh srcs/requirements/wordpress/tools/make_files.sh
+	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d
 
 build:
 	@echo "$(CLR_LBLUE)Build of ${NAME} configuration ...\n$(CLR_RESET)"
-	@docker-compose -f ./srcs/docker-compose.yml up -d --build
+	@sh srcs/requirements/wordpress/tools/make_files.sh
+	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
 
 down:
 	@echo "$(CLR_YELLOW)Shutting down the ${NAME} configuration ...\n$(CLR_RESET)"
-	@docker-compose -f ./srcs/docker-compose.yml down
+	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env down
 
 re: down
 	@echo "$(CLR_BLACK)Remaking the ${NAME} configuration ...\n$(CLR_RESET)"
-	@docker-compose -f ./srcs/docker-compose.yml up -d --build
+	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
 
 clean: down
 	@echo "$(CLR_RED)Cleaning the ${NAME} configuration ...\n$(CLR_RESET)"
 	@docker system prune -a
+	@sudo rm -rf ~/data/wordpress/*
+	@sudo rm -rf ~/data/mariadb/*
 
 fclean:
 	@echo "$(CLR_MAGENTA)Cleaning all the docker configuration ...\n$(CLR_RESET)"
 	@sh srcs/requirements/tools/destroy.sh
+
+.PHONY	: all build down re clean fclean

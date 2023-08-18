@@ -1,24 +1,42 @@
 FROM alpine:3.17
 
-RUN apt-get update -y && \
-    apt-get upgrade -y && \
-    apt-get install -y php7.3 php7.3-fpm php7.3-mysql php7.3-curl php7.3-gd php7.3-intl php7.3-mbstring php7.3-soap php7.3-xml php7.3-xmlrpc php7.3-zip && \
-    apt-get install -y curl net-tools mariadb-client sendmail && \
-    apt-get install -y moreutils gettext
+ARG PHP_VERSION=8 \
+    DB_NAME \
+    DB_USER \
+    DB_PASS
 
-RUN mkdir -p /run/php
+RUN apk update && \
+    apk upgrade && \
+    apk add --no-cache php${PHP_VERSION} \
+    php${PHP_VERSION}-fpm \
+    php${PHP_VERSION}-mysqli \
+    php${PHP_VERSION}-json \
+    php${PHP_VERSION}-curl \
+    php${PHP_VERSION}-dom \
+    php${PHP_VERSION}-exif \
+    php${PHP_VERSION}-fileinfo \
+    php${PHP_VERSION}-mbstring \
+    php${PHP_VERSION}-openssl \
+    php${PHP_VERSION}-xml \
+    php${PHP_VERSION}-zip \
+    wget \
+    unzip
+    sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" \
+      /etc/php8/php-fpm.d/www.conf && \
+    sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" \
+      /etc/php8/php-fpm.d/www.conf && \
+    sed -i "s|;listen.group = nobody|listen.group = nobody|g" \
+      /etc/php8/php-fpm.d/www.conf && \
+    && rm -f /var/cache/apk/*
 
-RUN sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php/7.3/fpm/php.ini
-RUN sed -i 's/listen = \/run\/php\/php7.3-fpm.sock/listen = 9000/g' /etc/php/7.3/fpm/pool.d/www.conf
+WORKDIR /var/www
 
-# COPY ./conf/www.conf /etc/php/7.3/fpm/pool.d
-# COPY ./conf/wp-config.php /var/www/
+RUN wget https://wordpress.org/latest.zip && \
+    unzip latest.zip && \
+    cp -rf wordpress/* . && \
+    rm -rf wordpress latest.zip
 
-EXPOSE 9000
+RUN sh wp-myconfig.sh && rm wp-myconfig.sh && \
+    chmod -R 0777 wp-content/
 
-COPY ./tools /var/www/
-
-RUN chmod +x /var/www/my_wordpress.sh
-RUN chmod +x /var/www/wordpress_init.sh
-
-ENTRYPOINT ["/var/www/my_wordpress.sh"]
+CMD ["/usr/sbin/php-fpm8", "-F"]
