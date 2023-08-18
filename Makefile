@@ -36,6 +36,6 @@ clean: down
 
 fclean:
 	@echo "$(CLR_MAGENTA)Cleaning all the docker configuration ...\n$(CLR_RESET)"
-	@sh srcs/requirements/tools/destroy.sh
+	@sudo sh srcs/requirements/tools/destroy.sh
 
 .PHONY	: all build down re clean fclean

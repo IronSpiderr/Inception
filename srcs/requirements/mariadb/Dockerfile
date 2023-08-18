@@ -23,4 +23,5 @@ EXPOSE 3306
 COPY conf/my_db.sh .
 RUN sh my_db.sh && rm my_db.sh
 USER mysql
+# CMD ["tail", "-f", "/dev/null"]
 CMD ["/usr/bin/mysqld", "--skip-log-error"]
