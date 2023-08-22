@@ -2,7 +2,8 @@ FROM alpine:3.17
 
 ARG DB_NAME \
     DB_USER \
-    DB_PASS
+    DB_PASS \
+    DB_ROOT
 
 RUN apk update && apk add --no-cache mariadb mariadb-client
 
@@ -23,5 +24,4 @@ EXPOSE 3306
 COPY conf/my_db.sh .
 RUN sh my_db.sh && rm my_db.sh
 USER mysql
-# CMD ["tail", "-f", "/dev/null"]
 CMD ["/usr/bin/mysqld", "--skip-log-error"]

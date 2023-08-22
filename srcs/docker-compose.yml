@@ -54,14 +54,11 @@ services:
 
 volumes:
   db_data:
-    driver: local
     driver_opts:
       type: none
       o: bind
       device: /home/${USER}/data/mariadb
   wp_data:
-    driver: local
-    name: wp
     driver_opts:
       type: none
       o: bind

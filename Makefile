@@ -24,7 +24,7 @@ down:
 	@echo "$(CLR_YELLOW)Shutting down the ${NAME} configuration ...\n$(CLR_RESET)"
 	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env down
 
-re: down
+re:
 	@echo "$(CLR_BLACK)Remaking the ${NAME} configuration ...\n$(CLR_RESET)"
 	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
 
@@ -36,6 +36,11 @@ clean: down
 
 fclean:
 	@echo "$(CLR_MAGENTA)Cleaning all the docker configuration ...\n$(CLR_RESET)"
-	@sudo sh srcs/requirements/tools/destroy.sh
+	@docker stop $$(docker ps -qa)
+	@docker system prune --all --force --volumes
+	@docker network prune --force
+	@docker volume prune --force
+	@sudo rm -rf ~/data/wordpress/*
+	@sudo rm -rf ~/data/mariadb/*
 
 .PHONY	: all build down re clean fclean
