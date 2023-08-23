@@ -15,18 +15,13 @@ services:
     volumes:
       - ./requirements/nginx/conf/:/etc/nginx/http.d/
       - ./requirements/nginx/tools:/etc/nginx/ssl/
-      - wp_data:/var/www/
+      - wp_data:/var/www/html
       
   mariadb:
     container_name: mariadb
     build:
       context: ./requirements/mariadb/
       dockerfile: Dockerfile
-      args:
-        DB_NAME: ${DB_NAME}
-        DB_USER: ${DB_USER}
-        DB_PASS: ${DB_PASS}
-        DB_ROOT: ${DB_ROOT}
     restart : always
     env_file:
       - .env
@@ -47,12 +42,14 @@ services:
         DB_USER: ${DB_USER}
         DB_PASS: ${DB_PASS}
     restart: always
+    env_file:
+      - .env
     depends_on:
       - mariadb
     networks:
       - inception
     volumes:
-      - wp_data:/var/www/
+      - wp_data:/var/www/html
 
 volumes:
   db_data:

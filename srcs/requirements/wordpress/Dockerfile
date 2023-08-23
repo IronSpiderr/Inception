@@ -1,9 +1,6 @@
 FROM alpine:3.17
 
-ARG PHP_VERSION=81 \
-    DB_NAME \
-    DB_USER \
-    DB_PASS
+ARG PHP_VERSION=81
 
 RUN apk update && apk upgrade && apk add --no-cache \
     php${PHP_VERSION} \
@@ -18,28 +15,15 @@ RUN apk update && apk upgrade && apk add --no-cache \
     php${PHP_VERSION}-openssl \
     php${PHP_VERSION}-xml \
     php${PHP_VERSION}-zip \
+    php${PHP_VERSION}-phar \
     wget \
-    unzip && \
-    sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" \
-      /etc/php${PHP_VERSION}/php-fpm.d/www.conf && \
-    sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" \
-      /etc/php${PHP_VERSION}/php-fpm.d/www.conf && \
-    sed -i "s|;listen.group = nobody|listen.group = nobody|g" \
-      /etc/php${PHP_VERSION}/php-fpm.d/www.conf && \
-    rm -f /var/cache/apk/*
+    mariadb-client
 
-WORKDIR /var/www
+COPY ./conf/wp-myconfig.sh /home/wp-myconfig.sh
+RUN chmod +x /home/wp-myconfig.sh
 
-RUN wget https://wordpress.org/latest.zip && \
-    unzip latest.zip && \
-    cp -rf wordpress/* . && \
-    rm -rf wordpress latest.zip
-
-COPY conf/wp-myconfig.sh .
-
-RUN sh wp-myconfig.sh && rm wp-myconfig.sh && \
-    chmod -R 0777 wp-content/
-  
 EXPOSE 9000
 
-CMD ["/usr/sbin/php-fpm81", "-F"]
+WORKDIR /home
+
+CMD ["sh", "wp-myconfig.sh"]
