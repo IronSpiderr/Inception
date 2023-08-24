@@ -13,20 +13,20 @@ CLR_RESET	= \033[0m
 all:
 	@echo "$(CLR_GREEN)Lauch of ${NAME} configuration ...\n$(CLR_RESET)"
 	@sh srcs/requirements/wordpress/tools/make_files.sh
-	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d
+	@docker-compose -f ./srcs/docker-compose.yml up -d
 
 build:
 	@echo "$(CLR_LBLUE)Build of ${NAME} configuration ...\n$(CLR_RESET)"
 	@sh srcs/requirements/wordpress/tools/make_files.sh
-	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
+	@docker-compose -f ./srcs/docker-compose.yml up -d --build
 
 down:
 	@echo "$(CLR_YELLOW)Shutting down the ${NAME} configuration ...\n$(CLR_RESET)"
-	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env down
+	@docker-compose -f ./srcs/docker-compose.yml down
 
 re:
 	@echo "$(CLR_BLACK)Remaking the ${NAME} configuration ...\n$(CLR_RESET)"
-	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
+	@docker-compose -f ./srcs/docker-compose.yml up -d --build
 
 clean: down
 	@echo "$(CLR_RED)Cleaning the ${NAME} configuration ...\n$(CLR_RESET)"

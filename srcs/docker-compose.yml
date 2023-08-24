@@ -40,10 +40,6 @@ services:
     build:
       context: ./requirements/wordpress/
       dockerfile: Dockerfile
-      args:
-        DB_NAME: ${DB_NAME}
-        DB_USER: ${DB_USER}
-        DB_PASS: ${DB_PASS}
     restart: always
     env_file:
       - .env
