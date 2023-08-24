@@ -41,8 +41,7 @@ if [ ! -f /var/www/html/wp-config.php ]; then
 		--user_pass="${WP_PASS}" \
 		--role=author
   	#test
-   	#wp theme install ketos
-    	#wp theme activate ketos
+   	wp theme install ketos --activate
 fi
 
 php-fpm81 -F -R
