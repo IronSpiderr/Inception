@@ -9,4 +9,4 @@ EXPOSE 3306
 
 WORKDIR /home
 
-ENTRYPOINT ["sh", "db_creation.sh"]
+CMD ["sh", "db_creation.sh"]
