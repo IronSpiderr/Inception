@@ -32,16 +32,16 @@ if [ ! -f /var/www/html/wp-config.php ]; then
 	wp core install \
 		--url="${DOMAIN_NAME}" \
 		--title="${WP_TITLE}" \
-		--admin_user="${DB_ROOT_USER}" \
+		--admin_user="${WP_ROOT_USER}" \
 		--admin_password="${WP_ROOT_PASS}" \
-		--admin_email="${WP_ROOT_EMAIL}"
+		--admin_email="${WP_ROOT_MAIL}"
 
 	# Create wordpress user
-	wp user create "${WP_USER}" "${WP_EMAIL}" \
+	wp user create "${WP_USER}" "${WP_MAIL}" \
 		--user_pass="${WP_PASS}" \
 		--role=author
-  	#test
-   	wp theme install ketos --activate
+	# install and activate wordpress theme
+   	wp theme install bravada --activate
 fi
 
 php-fpm81 -F -R
